@@ -1,0 +1,300 @@
+{
+	"info": {
+		"_postman_id": "b1a7c0de-0001-4000-8000-000000000001",
+		"name": "Library",
+		"description": "Učební projekt Knihovna — REST API. Endpointy se přidávají postupně.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "List books",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": ["{{baseUrl}}"],
+							"path": ["books"]
+						},
+						"description": "GET /books — vrátí seznam všech knih (200)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get book by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["books", "1"]
+						},
+						"description": "GET /books/{id} — jedna kniha (200), nebo 404 když neexistuje."
+					},
+					"response": []
+				},
+				{
+					"name": "Get book by id (404)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/999",
+							"host": ["{{baseUrl}}"],
+							"path": ["books", "999"]
+						},
+						"description": "GET /books/{id} na neexistující id — vrátí 404 s tělem application/problem+json (ProblemDetail)."
+					},
+					"response": []
+				},
+				{
+					"name": "Create book",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Hobit\",\n  \"author\": \"Tolkien\",\n  \"isbn\": \"978-80-00-000001\",\n  \"available\": true\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": ["{{baseUrl}}"],
+							"path": ["books"]
+						},
+						"description": "POST /books — vytvoří knihu (201). Tělo = BookRequest; 'available' je volitelné (default true)."
+					},
+					"response": []
+				},
+				{
+					"name": "Create book (400 validace)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"  \",\n  \"author\": \"\",\n  \"isbn\": \"123456789012345678901234567890\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books",
+							"host": ["{{baseUrl}}"],
+							"path": ["books"]
+						},
+						"description": "POST /books s neplatným tělem (prázdný titul/autor, moc dlouhé ISBN) — vrátí 400 s polem 'errors' per pole."
+					},
+					"response": []
+				},
+				{
+					"name": "Update book",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Hobit aneb cesta tam a zase zpatky\",\n  \"author\": \"J.R.R. Tolkien\",\n  \"isbn\": \"978-80-00-000001\",\n  \"available\": false\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/books/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["books", "1"]
+						},
+						"description": "PUT /books/{id} — přepíše knihu (200), nebo 404 když neexistuje."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete book",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/books/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["books", "1"]
+						},
+						"description": "DELETE /books/{id} — smaže knihu (204), nebo 404 když neexistuje."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "List users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						},
+						"description": "GET /users — seznam všech čtenářů (200)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1"]
+						},
+						"description": "GET /users/{id} — jeden čtenář (200), nebo 404 když neexistuje."
+					},
+					"response": []
+				},
+				{
+					"name": "Get user by id (404)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/999",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "999"]
+						},
+						"description": "GET /users/{id} na neexistující id — 404 (ProblemDetail)."
+					},
+					"response": []
+				},
+				{
+					"name": "Create user",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Jan\",\n  \"lastName\": \"Novak\",\n  \"email\": \"jan@example.cz\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						},
+						"description": "POST /users — vytvoří čtenáře (201). Tělo = UserRequest."
+					},
+					"response": []
+				},
+				{
+					"name": "Create user (409 duplicitní e-mail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Jan\",\n  \"lastName\": \"Dvojnik\",\n  \"email\": \"jan@example.cz\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						},
+						"description": "POST /users s e-mailem, který už existuje — vrátí 409 Conflict."
+					},
+					"response": []
+				},
+				{
+					"name": "Create user (400 nevalidní e-mail)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"X\",\n  \"lastName\": \"Y\",\n  \"email\": \"neni-email\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users",
+							"host": ["{{baseUrl}}"],
+							"path": ["users"]
+						},
+						"description": "POST /users s neplatným e-mailem — vrátí 400 s polem 'errors'."
+					},
+					"response": []
+				},
+				{
+					"name": "Update user",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"firstName\": \"Jan\",\n  \"lastName\": \"Novakovic\",\n  \"email\": \"jan@example.cz\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1"]
+						},
+						"description": "PUT /users/{id} — přepíše čtenáře (200); 404 když neexistuje, 409 při e-mailu jiného uživatele."
+					},
+					"response": []
+				},
+				{
+					"name": "Delete user",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/users/1",
+							"host": ["{{baseUrl}}"],
+							"path": ["users", "1"]
+						},
+						"description": "DELETE /users/{id} — smaže čtenáře (204), nebo 404 když neexistuje."
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
