@@ -295,6 +295,188 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Loans",
+			"item": [
+				{
+					"name": "List loans",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/loans",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loans"
+							]
+						},
+						"description": "GET /loans — seznam všech výpůjček (200)."
+					},
+					"response": []
+				},
+				{
+					"name": "Get loan by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/loans/1",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loans",
+								"1"
+							]
+						},
+						"description": "GET /loans/{id} — jedna výpůjčka (200), nebo 404 když neexistuje."
+					},
+					"response": []
+				},
+				{
+					"name": "Get loan by id (404)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/loans/999",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loans",
+								"999"
+							]
+						},
+						"description": "GET /loans/{id} na neexistující id — 404 (ProblemDetail)."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrow (create loan)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bookId\": 1,\n  \"userId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/loans",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loans"
+							]
+						},
+						"description": "POST /loans — půjčí knihu uživateli (201). Tělo = BorrowRequest {bookId, userId}. Kniha se překlopí na available=false."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrow (404 kniha neexistuje)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bookId\": 999,\n  \"userId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/loans",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loans"
+							]
+						},
+						"description": "POST /loans s neexistujícím bookId — 404."
+					},
+					"response": []
+				},
+				{
+					"name": "Borrow (409 kniha nedostupná)",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"bookId\": 1,\n  \"userId\": 1\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/loans",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loans"
+							]
+						},
+						"description": "POST /loans na knihu, která je už půjčená (available=false) — 409 Conflict."
+					},
+					"response": []
+				},
+				{
+					"name": "Return loan",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/loans/1/return",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loans",
+								"1",
+								"return"
+							]
+						},
+						"description": "POST /loans/{id}/return — vrátí výpůjčku (200), kniha se překlopí zpět na available=true."
+					},
+					"response": []
+				},
+				{
+					"name": "Return loan (409 už vrácena)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/loans/1/return",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"loans",
+								"1",
+								"return"
+							]
+						},
+						"description": "POST /loans/{id}/return na už vrácenou výpůjčku — 409 Conflict."
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }
